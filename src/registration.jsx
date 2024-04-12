@@ -22,6 +22,12 @@ const Registration = () => {
     }
     const newData = [...existingData, formData];
     sessionStorage.setItem('registrationData', JSON.stringify(newData));
+    setFormData({
+      message: '',
+      name: '',
+      query: '',
+      type: ''
+    });
   };
   
    
