@@ -1,0 +1,258 @@
+app.jsx
+-------
+import React from 'react';
+
+import ControlPage from './connect.jsx';
+
+function MainApp() { 
+    
+ 
+  return (
+    <>
+    <div>
+        <ControlPage/> 
+    </div>
+    </>
+  ); 
+}
+export default MainApp
+----------------------------------------------
+connect.jsx
+----------
+import React, { useState } from "react";
+import LoginPage from "./login.jsx";
+import HomePage from "./home.jsx";
+
+
+const ControlPage = () =>{
+    const [toggle, setToggle] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    function makeLogin(username, password){
+        if (username === "Sugan01" && password === "Sudhan09*") {
+            setToggle(true);
+            setUsername(username);
+            setPassword(password);
+        }  
+        else if (username === "Sugan02" && password === "Sudhan09*") {
+            setToggle(true);
+            setUsername(username);
+            setPassword(password);
+        } 
+        else{ 
+            alert("Invalid Username or Password");
+        }
+    };
+
+    function makeLogout() {
+        setToggle(false);
+    };
+
+    let show;
+
+    if (toggle) {
+        show = <HomePage userDisplay={username} passDisplay={password} Logout={makeLogout} />;
+    }
+    else {
+        show = <LoginPage Login={makeLogin} />;
+    }
+  
+    return(
+        <>
+            <div>
+                {show}
+            </div>
+        </>
+    )
+}
+
+export default ControlPage
+----------------------------------------------
+signup.jsx
+-------------
+import React from "react";
+import {Button,Input,InputNumber,Radio} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
+const Signup=()=>{
+    return(     
+        <>
+        <div style={{height:"100vh",width:"100%",backgroundColor:"#808080",display:"flex",flexDirection:'column',alignItems:"center"}}>
+            <div style={{display:"flex",flexDirection:'column',backgroundColor:"#F0E68C",marginTop:"100px",border:"2px solid white",boxShadow:"rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",width:"30%",height:"70%"}}> 
+            <div style={{marginTop:"5px",textAlign:"center",fontWeight:"bold"}}>Signup Form</div> 
+            <div style={{margin:"10px",marginTop:"20px"}}>
+                Fullname: <Input placeholder="Enter Fullname" style={{width:"70%",marginLeft:"10px"}} />                   
+            </div>
+            <div style={{margin:"10px"}}>
+                Gender: <Radio.Group style={{marginLeft:"10px", backgroundColor:"white",border:"1px solid white",paddingLeft:"10px"}}>
+                            <Radio value={1}>Male</Radio>
+                            <Radio value={2}>Female</Radio>
+                            <Radio value={3}>Others</Radio>
+                        </Radio.Group>                    
+            </div>
+            <div style={{margin:"10px"}}>
+            E-mail:<Input placeholder="Enter E-mail Id" style={{width:"70%",marginLeft:"10px"}} />                    
+            </div>
+            <div style={{margin:"10px"}}>      
+            Phone: <InputNumber placeholder="Enter Mobile Number" style={{width:"70%",marginLeft:"10px"}} />                                      
+            </div>
+            <div style={{margin:"10px"}}>
+            Username:  <Input placeholder="Enter Username" prefix={<UserOutlined />} style={{width:"60%",marginLeft:"10px"}}/>  
+            </div>
+            <div style={{margin:"10px"}}>
+            Password:  <Input.Password placeholder="input password" style={{width:"60%",marginLeft:"10px"}} />                   
+            </div>
+            <div style={{margin:"10px"}}>
+            Confirm Password:  <Input.Password placeholder="input password" style={{width:"60%",marginLeft:"10px"}} />
+            </div>
+            <Button type="primary" block style={{width:"60%", display:"flex", flexDirection:"column",alignItems:"center", marginLeft:"20%"}} >Register</Button>                
+            </div>
+        </div>
+        </>
+    )
+}
+export default Signup
+----------------------------------------------------------
+login.jsx
+------------
+import React from 'react';
+import { UserOutlined } from '@ant-design/icons';
+import { Input,Button} from 'antd';
+import { useState } from 'react';
+import Signup from './signup';
+
+function LoginPage({Login}) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+  
+    function homepage() {
+      Login(username, password);
+    };
+
+  
+  return (
+    <>
+    <div style={{display:"flex",fontSize:"20px",fontFamily:"serif",fontWeight:"bold",alignItems:"center",flexDirection:"column",justifyContent:"center",height:"100vh",width:"100%",backgroundColor:"#ADD8E6"}}> 
+    <div style={{margin:"10px",width:"25%",height:"40%",border:"2px",backgroundColor:"#FFE4E1", boxShadow:"rgba(0, 0, 0, 0.56) 0px 22px 70px 4px",padding:"20px"}}>
+    <div style={{display:"flex",justifyContent:'center'}}>Login</div>
+        <div style={{margin:"10px"}}>Username: </div>
+        <Input placeholder="Enter Username" prefix={<UserOutlined />} onChange={(d)=>setUsername(d.target.value)} />
+        <div style={{margin:"10px"}}>Password: </div>
+        <Input.Password placeholder="Enter password" onChange={(e)=>setPassword(e.target.value)}/>
+        <Button type="primary" onClick={homepage} style={{width:"100%",marginTop:"20px"}}>Login</Button>
+        <label style={{fontSize:"15px",margin:"10px"}}>Doesn't Have account: <Button type="text" onClick={Signup} style={{color:"blue",marginTop:"5px"}}>Register here</Button></label>
+    </div>
+    </div>
+    </>
+  );
+}
+
+export default LoginPage;
+-------------------------------------------------------
+home.jsx
+----------
+import React, { useState } from 'react';
+import { Input,Button } from 'antd';
+
+
+function HomePage({Logout}) {
+
+  const [name,setName] = useState('');
+  const [age,setAge] = useState('');
+  const [email,setEmail] = useState('');
+  const [phone,setPhone] = useState('');
+  const [city,setCity] = useState('');
+  const [job,setJob] = useState('');
+  const [value,setValue] = useState([]);
+
+  function AddValue(){
+    let arr={
+      clientName: name,
+      clientAge: age,
+      clientEmail: email,
+      clientPhone: phone,
+      clientCity: city,
+      clientProfession: job
+    }
+    setValue([...value, arr])
+
+      setName('')
+      setAge('')
+      setEmail('')
+      setPhone('')
+      setCity('')
+      setJob('')
+  }
+  return ( 
+    <>
+        <div style={{width:"50%", height:"100vh"}}>
+          <div  style={{margin:"30px"}}>
+            <div >Name :</div>
+            <Input value={name} onChange={(e)=>{setName(e.target.value)}} placeholder="Enter your name" />
+          </div>
+          <div style={{margin:"30px"}}  >
+            <div >Age :</div>
+            <Input value={age} onChange={(f)=>{setAge(f.target.value)}} style={{width:"50%"}} placeholder="Enter your age" />
+          </div>  
+          <div style={{margin:"30px"}}  >
+            <div >E-mail :</div>
+            <Input value={email} onChange={(g)=>{setEmail(g.target.value)}} placeholder="Enter your E-mail id" />
+        </div>
+        <div style={{margin:"30px"}}  >
+            <div >Phone :</div>
+            <Input value={phone} onChange={(h)=>{setEmail(h.target.value)}} placeholder="Enter your E-mail id" />
+        </div>
+        <div style={{margin:"30px"}}  >
+            <div >Location :</div>
+            <Input value={city} onChange={(i)=>{setEmail(i.target.value)}} placeholder="Enter your E-mail id" />
+        </div>
+        <div style={{margin:"30px"}}  >
+            <div >Profession :</div>
+            <Input value={job} onChange={(j)=>{setEmail(j.target.value)}} placeholder="Enter your E-mail id" />
+        </div>
+        <div style={{marginLeft:"20%",display:"flex",flexDirection:"row",}}>
+            <Button type="primary" onClick={Logout} style={{width:"30%",margin:"10px"}}>Logout</Button>
+            <Button type="primary" onClick={()=> AddValue()} style={{width:"30%",margin:"10px"}}>Store values</Button>
+        </div>
+        </div>
+        <div style={{margin:"10px",display:"flex" ,backgroundColor:"thistle",width:"100%",height:"100vh"}}>    
+        {value.map((data)=>{
+        return(
+            <>
+              <div style={{height:"100px",width:"200px",display:"flex",flexWrap:"wrap",flexDirection:"column",border:"1px solid red",alignItems:"center",justifyContent:"center",margin:'5px'}}>
+                <div>Name:{data.clientName}</div>
+                <div>Age:{data.clientAge}</div>
+                <div>Email:{data.clientEmail}</div>
+                <div>Phone:{data.clientPhone}</div>
+                <div>Location:{data.clientCity}</div>
+                <div>Profession:{data.clientProfession}</div>
+              </div>
+            </>
+        )
+    })}
+        </div>
+        
+    </>
+  );
+}
+ 
+export default HomePage;
+-----------------------------------------------------
+data.jsx
+--------
+import React from "react";
+// import AddValue from "home.jsx"
+
+function MainData(AddValue,Logout){
+    
+
+    return(
+        <>
+       
+        <Button type="primary" onClick={Logout} style={{width:"30%",margin:"10px"}}>Logout</Button>
+        </>
+    )
+}
+export default MainData
+------------------------------------------------------------
